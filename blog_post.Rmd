@@ -1,0 +1,138 @@
+---
+title: "Data Viz in R"
+author: "Florian Pethig, Jean-Philippe Rodrigue"
+date: "3/5/2020"
+output:
+  html_document:
+    code_folding: hide
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(hrbrthemes)
+```
+
+### INTRO
+
+As Business Data Analysts (BDAs) at zeroG, we always try to create great visualizations and share them with our fellow BDAs during our monthly knowledge exchange. For a long time, we wanted to get our head around R visualizations. So we kicked off a little side project to analyze and visualize Lufthansa reviews on Tripadvisor.
+
+### DATA
+
+The data we are using throughout this blog article contains 1,385 English reviews of Lufthansa passengers who flew to or from Frankfurt. The reviews were published on Tripadvisor between January 2016 and January 2017. The data set contains the following variables.
+
+```{r data description, echo=FALSE}
+# create dataframe
+Variable <- c('review_id', 'review_rating', 'review_date', 'travel_date', 'date_diff', 'booking_class',
+              'flight_origin', 'flight_destination')
+Description <- c('Unique review ID', 'Overall rating', 'Date review was published', 'Date traveled', 
+                 'Difference between travel_date and review_date', 'Booking class', 'City of origin',
+                 'City of destination')
+Values <- c('', '1 = terrible, 2 = poor, 3 = average, 4 = very good, 5 = excellent', '' , '' ,'Months',
+            'Economy, Premium Economy, Business Class, First Class', '','')
+df <- data.frame(Variable, Description, Values)
+
+# show table
+library(knitr)
+kable(df)
+```
+
+### RESEARCH QUESTIONS
+
+Our guiding research question was to understand how people perceive their flight experiences online. In particular, we were interested in the routes passengers most frequently reviewed and for which routes they reported the best/worst experience. Furthermore, we wanted to know whether there are any quality differences across different booking classes.
+
+### LOLLIPOP
+
+For the first plot, we chose a lollipop chart because it reduces thick bars of a bar chart into thin lines and therefore places more emphasis on the value. The results indicate that Frankfurt-Singapore and Singapore-Frankfurt are by far the most reviewed routes with 60+ reviews. 
+
+```{r lollipop}
+# libraries
+library(dplyr)
+library(ggplot2)
+library(hrbrthemes)
+
+# load data from github
+lh <- read.csv("https://raw.githubusercontent.com/florianpethig/dataviz/master/LH_reviews.csv", sep=';')
+
+# prepare data
+lh$not_fra <- paste(lh$flight_origin, lh$flight_destination, sep = "")
+lh$not_fra <- gsub("Frankfurt", "", lh$not_fra)
+lollipop <- as.data.frame(lh %>% group_by(not_fra) %>% summarize('count' = n()))
+lollipop <- lollipop[order(lollipop$count, decreasing=TRUE), ]
+first_n <- filter(head(lollipop, n=10))
+
+# plot lollipop
+plot1 <- ggplot(first_n, aes(x=reorder(not_fra, -count), y=count)) + 
+  geom_point(size=3, color="black") + 
+  geom_segment(aes(x=not_fra, 
+                   xend=not_fra, 
+                   y=0, 
+                   yend=count)) + 
+  labs(title="Most Frequently Reviewed Routes (To and From Frankfurt)", 
+       x="Routes", 
+       y="Frequency") + 
+  theme_ipsum_rc() +
+  theme(axis.text.x = element_text(angle=25, vjust=0.6), 
+        panel.grid.minor = element_blank(), 
+        panel.grid.major.x = element_blank(), 
+        axis.title.x = element_text(hjust = 0.5), 
+        axis.title.y = element_text(hjust = 0.5)
+        )
+plot1
+```
+
+
+### DOT
+
+For the second and third plot, I chose a dot plot because it focuses on the rank ordering of items, which is especially suitable to display the best and worst performing flights. I used ggarrange to place the two plots next to each other. The results are not spectacular because the dots of the top and worst flights remain very close to each other. Notably, “Cairo-Frankfurt” and “Amman-Frankfurt” are the only flights with an average rating below 3.
+
+```{r dot}
+dot <- as.data.frame(lh %>% group_by(not_fra) %>% summarize('count' = n(),
+                                                            'mean' = mean(review_rating)))
+dot <- dot[order(dot$mean, decreasing=TRUE), ]
+dot <- filter(dot, count >= 5)
+first_mean <- filter(head(dot, n=5))
+last_mean <- filter(tail(dot, n=5))
+
+# Plot2 - Dot Plots
+plot2 <- ggplot(first_mean, aes(x=reorder(not_fra, mean), y=mean)) + 
+  geom_point(col="darkolivegreen3", size=3) +   # Draw points
+  geom_segment(aes(x=not_fra,
+                   xend=not_fra, 
+                   y=min(1), 
+                   yend=max(5)), 
+               linetype="dashed", 
+               size=0.1) +   # Draw dashed lines
+  labs(title="Top 5 Flights - Highest Ratings", 
+       subtitle="Based on Flights >= 5 Reviews",
+       x = "Routes",
+       y = "Average Rating"
+  ) + theme_ipsum_rc() +
+  coord_flip() + theme(panel.grid.major.y = element_blank(), 
+  panel.grid.minor = element_blank(), 
+  axis.title.x = element_text(hjust = 0.5), 
+  axis.title.y = element_text(hjust = 0.5))
+plot2
+
+plot3 <- ggplot(last_mean, aes(x=reorder(not_fra, -mean), y=mean)) + 
+  geom_point(col="tomato2", size=3) +   # Draw points
+  geom_segment(aes(x=not_fra,
+                   xend=not_fra, 
+                   y=min(1), 
+                   yend=max(5)), 
+               linetype="dashed", 
+               size=0.1) +   # Draw dashed lines
+  labs(title="Top 5 Flights - Lowest Ratings", 
+       subtitle="Based on Flights With >= 5 Reviews",
+       x = "Routes",
+       y = "Average Rating"
+  ) + theme_ipsum() +
+  coord_flip() + theme(panel.grid.major.y = element_blank(), 
+  panel.grid.minor = element_blank(), 
+  axis.title.x = element_text(hjust = 0.5), 
+  axis.title.y = element_text(hjust = 0.5))
+plot3
+```
