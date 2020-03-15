@@ -5,7 +5,7 @@ date: "3/5/2020"
 output:
   html_document:
     code_folding: hide
-    fig_width: 9
+    fig_width: 8
     fig_align: center
   pdf_document: default
 ---
@@ -72,7 +72,8 @@ plot1 <- ggplot(first_n) +
                    y=0, 
                    yend=count)) +
   geom_point(size=5, color="#C8D717", aes(x=not_fra, y=count)) +
-  labs(title="Most Frequently Reviewed Routes (To and From Frankfurt)", 
+  labs(title="Most Frequently Reviewed Routes (To and From Frankfurt)",
+       subtitle = "Singapore Is by Far the Most Frequently Reviewed Route",
        x="Routes", 
        y="Frequency") + 
   theme_ipsum() +
@@ -100,8 +101,6 @@ dot <- dot[order(dot$mean, decreasing=TRUE), ]
 dot <- filter(dot, count >= 5)
 first_mean <- filter(head(dot, n=5))
 last_mean <- filter(tail(dot, n=5))
-
-par(mfrow=c(1,2))
 
 # Plot2 - Dot Plots
 plot2 <- ggplot(first_mean, aes(x=reorder(not_fra, mean), y=mean)) + 
@@ -142,12 +141,11 @@ plot3 <- ggplot(last_mean, aes(x=reorder(not_fra, -mean), y=mean)) +
         axis.title.x = element_text(hjust = 0.5), 
         axis.title.y = element_text(hjust = 0.5),
         plot.margin = margin(30, 30, 30, 0)
-        #plot.subtitle = element_text(hjust = 0.5)
         )
 
 plot2_3 <- ggarrange(plot2, plot3)
 annotate_figure(plot2_3, 
-                top = text_grob("Routes with Highest and Lowest Ratings (To and From Frankfurt)", 
+                top = text_grob("Routes With Highest and Lowest Ratings (To and From Frankfurt)", 
                                 face = "bold",
                                 family = "Arial Narrow",
                                 size = 18,
@@ -165,12 +163,16 @@ We wanted to know whether there were any differences in the average rating betwe
 ```{r mosaic}
 library(ggmosaic)
 
-ordered <- factor(lh$booking_class, levels = c("Economy", "Premium Economy", "Business Class", "First Class"))
+ordered <- factor(lh$booking_class, levels = c("Economy", 
+                                               "Premium Economy", 
+                                               "Business Class", 
+                                               "First Class"))
+#Mosaic Plot
 plot_mosaic <- ggplot(data = lh) +
   geom_mosaic(mapping = aes(x = product(review_rating, ordered), fill = review_rating), na.rm = TRUE) +
   scale_y_continuous(labels = scales::percent) +
   scale_fill_brewer(palette = "GnBu") + 
-  labs(title = "Rating by Booking Class",
+  labs(title = "Ratings by Booking Class",
        subtitle = "Premium Economy Receives Higher Ratings Than Business Class",
        fill = "Rating (1 = Terrible, 5 = Excellent)",
        x = "Booking Class",
@@ -180,10 +182,15 @@ plot_mosaic <- ggplot(data = lh) +
                              label.position = "bottom",
                              keywidth = 3,
                              nrow = 1)) +
-  theme_ipsum() + theme(legend.position = "bottom",
+  theme_ipsum() + theme(legend.position = "bottom", 
                         axis.title.x = element_text(hjust = 0.5), 
-                        panel.grid.major = element_blank(), 
-                        panel.grid.minor = element_blank(),
-                        axis.text.x = element_text(vjust=3))
+                        panel.grid.major = element_blank(),
+                        panel.grid.minor = element_blank())
 plot_mosaic
 ```
+
+### JITTER
+
+Furthermore, we analyzed whether the time span between the actual travel date and the submission of the review had an impact on the rating. First, we calculated the time difference in months using Excel. Second, we used the geom_jitter function to spread the overlapping dots. Third, we introduced the geom_crossbar to display the mean of each group. The results are very interesting. The dots indicate that travelers generally had a favorable perception of their flight experiences and tend to review their flights shortly after their journey. The crossbar shows that the average rating increases with each month. Thus, as time passes, travelers tend to rate their experiences more positively.
+
+
