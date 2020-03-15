@@ -1,7 +1,7 @@
 ---
 title: "DataViz in R"
 author: "Florian Pethig, Jean-Philippe Rodrigue"
-date: "3/5/2020"
+date: "3/15/2020"
 knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), 'index.html')) })
 output:
   html_document:
@@ -76,7 +76,7 @@ plot1 <- ggplot(first_n) +
        subtitle = "Singapore Is by Far the Most Frequently Reviewed Route",
        x="Routes", 
        y="Frequency") + 
-  theme_ipsum() +
+  theme_ipsum_rc() +
   theme(axis.text.x = element_text(angle=25, vjust=0.6), 
         panel.grid.minor = element_blank(), 
         panel.grid.major.x = element_blank(), 
@@ -114,7 +114,7 @@ plot2 <- ggplot(first_mean, aes(x=reorder(not_fra, mean), y=mean)) +
   labs(subtitle="Highest Ratings",
        x = "Routes",
        y = "") + 
-  theme_ipsum() +
+  theme_ipsum_rc() +
   coord_flip() + 
   theme(panel.grid.major.y = element_blank(), 
         panel.grid.minor = element_blank(), 
@@ -134,7 +134,7 @@ plot3 <- ggplot(last_mean, aes(x=reorder(not_fra, -mean), y=mean)) +
   labs(subtitle="Lowest Ratings",
        x = "",
        y = "") + 
-  theme_ipsum() +
+  theme_ipsum_rc() +
   coord_flip() + 
   theme(panel.grid.major.y = element_blank(), 
         panel.grid.minor = element_blank(), 
@@ -147,11 +147,11 @@ plot2_3 <- ggarrange(plot2, plot3)
 annotate_figure(plot2_3, 
                 top = text_grob("Routes With Highest and Lowest Ratings (To and From Frankfurt)", 
                                 face = "bold",
-                                family = "Arial Narrow",
+                                family = "Roboto Condensed",
                                 size = 18,
                                 y = -0.5),
                 bottom = text_grob("Mean Rating", 
-                                   family = "Arial Narrow",
+                                   family = "Roboto Condensed",
                                    size = 9,
                                    y = 3))
 ```
@@ -179,10 +179,11 @@ plot_mosaic <- ggplot(data = lh) +
                              label.position = "bottom",
                              keywidth = 3,
                              nrow = 1)) +
-  theme_ipsum() + theme(legend.position = "bottom", 
-                        axis.title.x = element_text(hjust = 0.5), 
-                        panel.grid.major = element_blank(),
-                        panel.grid.minor = element_blank())
+  theme_ipsum_rc() + 
+  theme(legend.position = "bottom", 
+        axis.title.x = element_text(hjust = 0.5), 
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
 plot_mosaic
 ```
 
