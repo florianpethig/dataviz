@@ -614,10 +614,7 @@ annotate_figure(plot2_3,
 <p>We wanted to know whether there were any differences in the average rating between the different booking classes. We used a mosaic plot because it divides the different booking classes into their relative proportions. The plot shows that the majority of travelers reviewed “Economy”, followed by “Business Class”, “Premium Economy”, and “First Class”. Interestingly, travelers had a more positive perception of Lufthansa’s Premium Economy Class than of its Business Class.</p>
 <pre class="r"><code>library(ggmosaic)
 
-ordered &lt;- factor(lh$booking_class, levels = c(&quot;Economy&quot;, 
-                                               &quot;Premium Economy&quot;, 
-                                               &quot;Business Class&quot;, 
-                                               &quot;First Class&quot;))
+lh$ordered &lt;- factor(lh$booking_class, levels = c(&quot;Economy&quot;, &quot;Premium Economy&quot;, &quot;Business Class&quot;, &quot;First Class&quot;))
 #Mosaic Plot
 plot_mosaic &lt;- ggplot(data = lh) +
   geom_mosaic(mapping = aes(x = product(review_rating, ordered), fill = review_rating), na.rm = TRUE) +
@@ -643,6 +640,7 @@ plot_mosaic</code></pre>
 <div id="jitter" class="section level3">
 <h3>JITTER</h3>
 <p>Furthermore, we analyzed whether the time span between the actual travel date and the submission of the review had an impact on the rating. First, we calculated the time difference in months using Excel. Second, we used the geom_jitter function to spread the overlapping dots. Third, we introduced the geom_crossbar to display the mean of each group. The results are very interesting. The dots indicate that travelers generally had a favorable perception of their flight experiences and tend to review their flights shortly after their journey. The crossbar shows that the average rating increases with each month. Thus, as time passes, travelers tend to rate their experiences more positively.</p>
+<p>super cool workflow</p>
 </div>
 
 

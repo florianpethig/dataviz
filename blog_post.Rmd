@@ -2,12 +2,12 @@
 title: "DataViz in R"
 author: "Florian Pethig, Jean-Philippe Rodrigue"
 date: "3/5/2020"
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), 'index.html')) })
 output:
   html_document:
     code_folding: hide
     fig_width: 8
     fig_align: center
-  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -163,10 +163,7 @@ We wanted to know whether there were any differences in the average rating betwe
 ```{r mosaic}
 library(ggmosaic)
 
-ordered <- factor(lh$booking_class, levels = c("Economy", 
-                                               "Premium Economy", 
-                                               "Business Class", 
-                                               "First Class"))
+lh$ordered <- factor(lh$booking_class, levels = c("Economy", "Premium Economy", "Business Class", "First Class"))
 #Mosaic Plot
 plot_mosaic <- ggplot(data = lh) +
   geom_mosaic(mapping = aes(x = product(review_rating, ordered), fill = review_rating), na.rm = TRUE) +
@@ -193,4 +190,4 @@ plot_mosaic
 
 Furthermore, we analyzed whether the time span between the actual travel date and the submission of the review had an impact on the rating. First, we calculated the time difference in months using Excel. Second, we used the geom_jitter function to spread the overlapping dots. Third, we introduced the geom_crossbar to display the mean of each group. The results are very interesting. The dots indicate that travelers generally had a favorable perception of their flight experiences and tend to review their flights shortly after their journey. The crossbar shows that the average rating increases with each month. Thus, as time passes, travelers tend to rate their experiences more positively.
 
-
+super cool workflow
