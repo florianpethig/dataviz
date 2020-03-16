@@ -89,7 +89,7 @@ plot1
 
 ### Dot Plot
 
-For the next visualization, we chose a dot plot because it focuses on the rank ordering of items, which is especially suitable to display the best and worst performing flights. We used ggarrange to place the two plots next to each other. We only chose routes which had at least 5 reviews so that the mean rating is somewhat meaningful. The results indicate that only Cairo, Venice, and Amman have a rating below 3. Furthermore, we see that long-haul flights tend to attract more positive ratings than short- and medium-haul flights.
+Similar to the lollipop chart, we chose a dot plot for the next visualization.  A dot plot focuses on the rank ordering of items, which is especially suitable to display the best and worst performing flights. We used `ggarrange` from the `ggpubr` package to place the two plots next to each other. We only chose routes which had at least 5 reviews so that the mean rating is somewhat meaningful. The results indicate that only Cairo, Venice, and Amman have a rating below 3. Furthermore, we see that long-haul flights tend to attract more positive ratings than short- and medium-haul flights.
 
 ```{r dot, warning=FALSE}
 library(magrittr)
@@ -161,7 +161,7 @@ annotate_figure(plot2_3,
 
 ### Mosaic Plot
 
-Next, we wanted to know whether any differences in the ratings across different booking classes existed. We used a mosaic plot because it divides the different booking classes into their relative proportions. We used the package "ggmosaic". The plot shows that the majority of travelers reviewed Economy class, followed by Business Class, Premium Economy, and First Class. Interestingly, travelers had a more positive perception of Lufthansa’s Premium Economy Class than of its Business Class.
+Next, we wanted to know whether any differences in the ratings across different booking classes existed. We used a mosaic plot because it divides the different booking classes into their relative proportions. For visualization in R, we used the `geom_mosaic` function of the `ggmosaic` package. The plot shows that the majority of passengers reviewed Economy class, followed by Business Class, Premium Economy, and First Class. Interestingly, passengers had a more positive perception of Lufthansa’s Premium Economy Class than of its Business Class.
 
 ```{r mosaic}
 library(ggmosaic)
@@ -195,7 +195,7 @@ plot_mosaic
 
 ### Jitter
 
-Lastly, we analyzed whether the time span between the actual travel date and the submission of the review had an impact on the rating. First, we calculated the time difference in months. Second, we used the geom_jitter function to spread the overlapping dots. Third, we introduced the geom_crossbar to display the mean rating of each group. The results are very interesting. The density of dots indicates that passengers generally had a favorable perception of their flight experiences and tend to review their flights shortly after their journey. The crossbar shows that the average rating increases with each month. Thus, as time passes, passengers tend to rate their experiences more positively.
+Lastly, we analyzed whether the time span between the actual travel date and the submission of the review had an impact on the rating. First, we calculated the time difference in months. Second, we used the `geom_jitter` function to spread the overlapping dots. Third, we introduced the `geom_crossbar` to display the mean rating of each group. The results are very interesting. The density of dots indicates that passengers generally had a favorable perception of their flight experiences and tend to review their flights shortly after their journey. The crossbar shows that the average rating increases with each month. Thus, as time passes, passengers tend to rate their experiences more positively.
 
 ```{r jitter, warning=FALSE}
 #Prepare data for jitter plot
@@ -205,21 +205,20 @@ jitter_summary <- as.data.frame(jitter %>% group_by(date_dif) %>% summarize('cou
                                                                             'mean' = mean(review_rating)))
 
 #Jitter plot
-g <- ggplot(jitter, 
-            aes(sort.int(date_dif), review_rating))
-plot_jitter <- g + geom_crossbar(data=jitter_summary, 
-                                 aes(x=date_dif, 
-                                     ymin=mean, 
-                                     ymax=mean, 
-                                     y=mean, 
-                                     group=date_dif, 
-                                     color="red"), 
-                                 width = 0.5) +
+plot_jitter <- ggplot(jitter, aes(sort.int(date_dif), review_rating)) + 
+  geom_crossbar(data=jitter_summary, 
+                aes(x=date_dif, 
+                    ymin=mean,
+                    ymax=mean,
+                    y=mean,
+                    group=date_dif,
+                    color="red"), 
+                width = 0.5) +
   scale_x_continuous(breaks=c(0,1,2),labels=c("< 1 month", "1-2 months", "2-3 months")) +
   geom_jitter(width = .1, size=0.7) +
   labs(x = "Time Span Between Flight and Review",
-       y = "Ratings",
-       title = "Difference Between Flight Time and Review Time",
+       y = "Rating",
+       title = "Difference Between Flight Date and Review Date",
        subtitle = "Average Rating Improves as the Time Between Flight and Review Increases") +
   guides( title.position = "top",
           keywidth = 3,
