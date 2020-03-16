@@ -161,7 +161,7 @@ annotate_figure(plot2_3,
 
 ### Mosaic Plot
 
-Next, we wanted to know whether any differences in the ratings across different booking classes existed. We used a mosaic plot because it divides the different booking classes into their relative proportions. For visualization in R, we used the `geom_mosaic` function of the `ggmosaic` package. The plot shows that the majority of passengers reviewed Economy class, followed by Business Class, Premium Economy, and First Class. Interestingly, passengers had a more positive perception of Lufthansa’s Premium Economy Class than of its Business Class.
+Next, we wanted to know whether any differences in the ratings across different booking classes existed. We used a mosaic plot because it divides the different booking classes into their relative proportions. For the visualization in R, we used the `geom_mosaic` function of the `ggmosaic` package. The plot shows that the majority of passengers reviewed Economy class, followed by Business Class, Premium Economy, and First Class. Interestingly, passengers had a more positive perception of Lufthansa’s Premium Economy Class than of its Business Class.
 
 ```{r mosaic}
 library(ggmosaic)
