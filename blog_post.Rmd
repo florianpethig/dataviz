@@ -1,7 +1,7 @@
 ---
 title: "DataViz in R"
 author: "Florian Pethig, Jean-Philippe Rodrigue"
-date: "3/15/2020"
+date: "Last update: `r format(Sys.time(), '%d %B %Y')`"
 knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), 'index.html')) })
 output:
   html_document:
@@ -50,7 +50,7 @@ Our guiding research question was to understand how passengers perceive their fl
 
 ### Lollipop Chart
 
-First of all, we wanted to get a brief overview of the most frequently reviewed inbound and outbound flights from Frankfurt. To answer this question, we went with a lollipop chart. This plot reduces the thick bars of a bar chart into thin lines and therefore places more emphasis on the value, which is what matters at the ned of the day. The results indicate that Frankfurt-Singapore and Singapore-Frankfurt are by far the most frequently reviewed routes with 60+ reviews. Among the top 20 most frequently reviewed flights, we find 17 long-haul flights (only exceptions: London, Manchester, Budapest). This indicates that passengers are more likely to provide reviews for longer flights.
+First of all, we wanted to get a brief overview of the most frequently reviewed inbound and outbound flights from Frankfurt. To answer this question, we went with a lollipop chart. This plot reduces the thick bars of a bar chart into thin lines and therefore places more emphasis on the value, which is what matters at the end of the day. The results indicate that Frankfurt-Singapore and Singapore-Frankfurt are by far the most frequently reviewed routes with 60+ reviews. Among the top 20 most frequently reviewed flights, we find 17 long-haul flights (only exceptions: London, Manchester, Budapest). This indicates that passengers are more likely to provide reviews for longer flights.
 
 ```{r lollipop}
 # libraries
@@ -92,7 +92,7 @@ plot1
 
 ### Dot Plot
 
-Next, we wanted to know which routes were the worse and the best rated and see if there was any pattern between the rating scores and the flight lenght. To best analyse it, we chose a dot plot for the next visualization.  A dot plot focuses on the rank ordering of items, which is especially suitable to display the best and worst performing flights. We used `ggarrange` from the `ggpubr` package to place the two plots next to each other. We only chose routes which had at least 5 reviews so that the mean rating is somewhat meaningful. The results indicate that only Cairo, Venice, and Amman have a rating below 3. Furthermore, we see that long-haul flights tend to attract more positive ratings than short- and medium-haul flights.
+Next, we wanted to know which routes were rated worst and which best, and see if there was a pattern between the rating results and the flight length. To best analyze it, we chose a dot plot for the next visualization.  A dot plot focuses on the rank ordering of items, which is especially suitable to display the best and worst performing flights. We used `ggarrange` from the `ggpubr` package to place the two plots next to each other. We only chose routes which had at least 5 reviews so that the mean rating is somewhat meaningful. The results indicate that only Cairo, Venice, and Amman have a rating below 3. Furthermore, we see that long-haul flights tend to attract more positive ratings than short- and medium-haul flights.
 
 ```{r dot, warning=FALSE}
 library(magrittr)
@@ -164,7 +164,7 @@ annotate_figure(plot2_3,
 
 ### Mosaic Plot
 
-Next, we wanted to know whether any differences in the ratings across different booking classes existed. We used a mosaic plot because it divides the different booking classes into their relative proportions. For the visualization in R, we used the `geom_mosaic` function of the `ggmosaic` package. The plot shows that the majority of passengers reviewed Economy class, followed by Business Class, Premium Economy, and First Class. Interestingly, passengers had a more positive perception of Lufthansa’s Premium Economy Class than of its Business Class.
+Next, we wanted to know whether any differences in the ratings across different booking classes existed. We used a mosaic plot because it divides the different booking classes into their relative proportions. For the visualization in R, we used the `geom_mosaic` function of the `ggmosaic` package. The plot shows that the majority of passengers reviewed Economy Class, followed by Business Class, Premium Economy, and First Class. Interestingly, passengers had a more positive perception of Lufthansa’s Premium Economy Class than of its Business Class.
 
 ```{r mosaic}
 library(ggmosaic)
@@ -198,7 +198,7 @@ plot_mosaic
 
 ### Jitter
 
-Lastly, we analyzed whether the time span between the actual travel date and the submission of the review had an impact on the rating. Firstly, we calculated the time difference in months and secondly, we used the `geom_jitter` function to spread the overlapping dots. Third, we introduced the `geom_crossbar` to display the mean rating of each group. The reason why we chos ethe jitter plot is that we wanted to spread the dots that we packed together in the distribution for easy reading. As you can see, this fucntion allows you to seperate the dots into different columns. The results are very interesting. The density of dots indicates that passengers generally had a favorable perception of their flight experiences and tend to review their flights shortly after their journey. The crossbar shows that the average rating increases with each month. Thus, as time passes, passengers tend to rate their experiences more positively.
+Lastly, we analyzed whether the time span between the actual travel date and the submission of the review correlated with the rating: (1) we calculated the time difference in months, (2) we used the `geom_jitter` function to spread the overlapping dots, and (3) we introduced the `geom_crossbar` to display the mean rating of each group. The most interesting part of this plot is the `geom_jitter` function, which adds random noise to the plot to avoid overplotting. This visualization allows the reader to estimate the number of ratings in each category at first glance. The density of dots indicates that passengers generally had a favorable perception of their flight experiences and tend to review their flights shortly after their journey. The crossbar shows that the average rating increases with each month. Thus, as time passes, passengers tend to rate their experiences more positively.
 
 ```{r jitter, warning=FALSE}
 #Prepare data for jitter plot
@@ -236,4 +236,4 @@ plot_jitter
 
 ### Conclusion
 
-Now we have a better overview of some of Lufthansa's reviews. The good thing about choosing the right visualization is that we can come up with quick answers to our main questions. Of course we could have chosen other visualizations, but our main point is to show you the kind of vizz anybody could use depending on the answers you want to get.  
+Now we have a better overview of how passengers perceive their flight experience on Lufthansa and report on it on Tripadvisor. By choosing appropriate visualization, we can come up with quick answers to our main questions. Of course we could have chosen other visualizations, but our main point was to give you a short introduction to the kind of visualizations everyone can use.
