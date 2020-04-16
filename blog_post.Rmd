@@ -21,12 +21,12 @@ library(hrbrthemes)
 
 As Business Data Analysts (BDAs) at [zeroG](https://www.zerog.aero/), we try to create great visualizations and share them with our fellow BDAs during our monthly knowledge exchange meetings. For quite some time now, Jean-Philippe and I wanted to get our head around R visualizations. So we kicked off this side project with two main goals in mind:
 
-(1) to analyze and provide insights from our findings based on Lufthansa reviews from Tripadvisor, and 
-(2) to show you what kind of visualizations fit best depending on questions you are trying to answer.
+(1) to analyze and provide insights from our findings based on Lufthansa reviews from TripAdvisor, and 
+(2) to demonstrate what kind of visualizations fit best depending on questions you try to answer.
 
 ### Data
 
-As already mentioned above, the dataset that we will be analysing in this research comes from Tripadvisor. It contains 1,385 English reviews of Lufthansa flights to or from Frankfurt. The reviews were published on Tripadvisor between January 2016 and January 2017. The data set contains the following variables.
+As mentioned above, the data set that we analyze in this research comes from TripAdvisor. It contains 1,385 English reviews of Lufthansa flights to or from Frankfurt. The reviews were published on TripAdvisor between January 2016 and January 2017. The data set contains the following variables.
 
 ```{r data description, echo=FALSE}
 # create dataframe
@@ -92,7 +92,7 @@ plot1
 
 ### Dot Plot
 
-Next, we wanted to know which routes were rated worst and which best, and see if there was a pattern between the rating results and the flight length. To best analyze it, we chose a dot plot for the next visualization.  A dot plot focuses on the rank ordering of items, which is especially suitable to display the best and worst performing flights. We used `ggarrange` from the `ggpubr` package to place the two plots next to each other. We only chose routes which had at least 5 reviews so that the mean rating is somewhat meaningful. The results indicate that only Cairo, Venice, and Amman have a rating below 3. Furthermore, we see that long-haul flights tend to attract more positive ratings than short- and medium-haul flights.
+Next, we wanted to know which routes were rated worst and which best, and see if there was a dependency between rating results and flight length. To best answer these questions, we chose a dot plot for the next visualization.  A dot plot focuses on the rank ordering of items, which is especially suitable to display the best and worst performing flight routes. We used `ggarrange` from the `ggpubr` package to place the two plots next to each other. We filteres for routes which had at least 5 reviews so that the mean rating is somewhat meaningful. The results indicate that only Cairo, Venice, and Amman have a rating below 3. Furthermore, we see that long-haul flights tend to attract more positive ratings than short- and medium-haul flights.
 
 ```{r dot, warning=FALSE}
 library(magrittr)
@@ -164,7 +164,7 @@ annotate_figure(plot2_3,
 
 ### Mosaic Plot
 
-Next, we wanted to know whether any differences in the ratings across different booking classes existed. We used a mosaic plot because it divides the different booking classes into their relative proportions. For the visualization in R, we used the `geom_mosaic` function of the `ggmosaic` package. The plot shows that the majority of passengers reviewed Economy Class, followed by Business Class, Premium Economy, and First Class. Interestingly, passengers had a more positive perception of Lufthansa’s Premium Economy Class than of its Business Class.
+Next, we wanted to know whether any differences in the ratings across different booking classes exists. We used a mosaic plot because it divides the different booking classes into their relative proportions. For the visualization in R, we used the `geom_mosaic` function of the `ggmosaic` package. The plot shows that the majority of passengers reviewed Economy Class, followed by Business Class, Premium Economy, and First Class. Interestingly, passengers had a more positive perception of Lufthansa’s Premium Economy Class than of its Business Class.
 
 ```{r mosaic}
 library(ggmosaic)
@@ -198,7 +198,7 @@ plot_mosaic
 
 ### Jitter
 
-Lastly, we analyzed whether the time span between the actual travel date and the submission of the review correlated with the rating: (1) we calculated the time difference in months, (2) we used the `geom_jitter` function to spread the overlapping dots, and (3) we introduced the `geom_crossbar` to display the mean rating of each group. The most interesting part of this plot is the `geom_jitter` function, which adds random noise to the plot to avoid overplotting. This visualization allows the reader to estimate the number of ratings in each category at first glance. The density of dots indicates that passengers generally had a favorable perception of their flight experiences and tend to review their flights shortly after their journey. The crossbar shows that the average rating increases with each month. Thus, as time passes, passengers tend to rate their experiences more positively.
+Lastly, we analyzed whether the time span between actual travel date and submission of the review correlated with the rating: (1) we calculated the time difference in months, (2) we used the `geom_jitter` function to spread the overlapping dots, and (3) we introduced `geom_crossbar` to display the mean rating of each group. The most interesting part of this plot is the `geom_jitter` function, which adds random noise to the plot to avoid over-plotting. This visualization allows you to estimate the number of ratings in each category in one first glance. The density of dots indicates that passengers generally had a favorable perception of their flight experiences and tend to review their flights shortly after their journey. The crossbar shows that the average rating increases with each month. Thus, as time passes, passengers tend to rate their experiences more positively.
 
 ```{r jitter, warning=FALSE}
 #Prepare data for jitter plot
@@ -236,4 +236,4 @@ plot_jitter
 
 ### Conclusion
 
-Now we have a better overview of how passengers perceive their flight experience on Lufthansa and report on it on Tripadvisor. By choosing appropriate visualization, we can come up with quick answers to our main questions. Of course we could have chosen other visualizations, but our main point was to give you a short introduction to the kind of visualizations everyone can use.
+Now we have a better overview of how passengers perceive their flight experience on Lufthansa based on TripAdvisor reviews. By choosing appropriate visualization, we can come up with quick answers to our main questions. Of course we could have chosen other visualizations, but our main point was to give you a short introduction to the kind of visualizations everyone can use.
