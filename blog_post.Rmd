@@ -22,7 +22,7 @@ library(hrbrthemes)
 As Business Data Analysts (BDAs) at [zeroG](https://www.zerog.aero/), we try to create great visualizations and share them with our fellow BDAs during our monthly knowledge exchange meetings. For quite some time now, Jean-Philippe and I wanted to get our head around R visualizations. So we kicked off this side project with two main goals in mind:
 
 (1) to analyze and provide insights from our findings based on Lufthansa reviews from TripAdvisor, and 
-(2) to demonstrate what kind of visualizations fit best depending on questions you try to answer.
+(2) to demonstrate what kind of visualizations fit best depending on the questions you try to answer.
 
 ### Data
 
